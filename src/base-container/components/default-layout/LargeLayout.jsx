@@ -9,13 +9,15 @@ import messages from './messages';
 
 const LargeLayout = () => {
   const { formatMessage } = useIntl();
-
   return (
-    <div className="w-50 d-flex">
+    <div className="w-50 w-50 d-none d-xl-flex">
       <div className="col-md-9 bg-primary-400">
+        <div className='pt-5'>
+
         <Hyperlink destination={getConfig().MARKETING_SITE_BASE_URL}>
-          <Image className="logo position-absolute" alt={getConfig().SITE_NAME} src={getConfig().LOGO_WHITE_URL} />
+          <Image className=" position-absolute logo" alt={getConfig().SITE_NAME} src={getConfig().LOGO_WHITE_URL} />
         </Hyperlink>
+        </div>
         <div className="min-vh-100 d-flex align-items-center">
           <div className={classNames({ 'large-yellow-line mr-n4.5': getConfig().SITE_NAME === 'edX' })} />
           <h1

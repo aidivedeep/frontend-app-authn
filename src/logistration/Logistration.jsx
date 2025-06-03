@@ -1,45 +1,53 @@
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
+import { useLocation } from "react-router-dom";
 
-import { getConfig } from '@edx/frontend-platform';
-import { sendPageEvent, sendTrackEvent } from '@edx/frontend-platform/analytics';
-import { getAuthService } from '@edx/frontend-platform/auth';
-import { useIntl } from '@edx/frontend-platform/i18n';
+import { getConfig } from "@edx/frontend-platform";
 import {
-  Icon,
-  Tab,
-  Tabs,
-} from '@openedx/paragon';
-import { ChevronLeft } from '@openedx/paragon/icons';
-import PropTypes from 'prop-types';
-import { Navigate, useNavigate } from 'react-router-dom';
+  sendPageEvent,
+  sendTrackEvent,
+} from "@edx/frontend-platform/analytics";
+import { getAuthService } from "@edx/frontend-platform/auth";
+import { useIntl } from "@edx/frontend-platform/i18n";
+import { Icon, Spinner, Tab, Tabs } from "@openedx/paragon";
+import { ChevronLeft } from "@openedx/paragon/icons";
+import PropTypes from "prop-types";
+import { Navigate, useNavigate } from "react-router-dom";
 
-import BaseContainer from '../base-container';
-import { clearThirdPartyAuthContextErrorMessage } from '../common-components/data/actions';
+import BaseContainer from "../base-container";
+import { clearThirdPartyAuthContextErrorMessage } from "../common-components/data/actions";
+import { tpaProvidersSelector } from "../common-components/data/selectors";
+import messages from "../common-components/messages";
+import { LOGIN_PAGE, REGISTER_PAGE, tanancy } from "../data/constants";
 import {
-  tpaProvidersSelector,
-} from '../common-components/data/selectors';
-import messages from '../common-components/messages';
-import { LOGIN_PAGE, REGISTER_PAGE } from '../data/constants';
-import {
-  getTpaHint, getTpaProvider, updatePathWithQueryParams,
-} from '../data/utils';
-import { LoginPage } from '../login';
-import { backupLoginForm } from '../login/data/actions';
-import { RegistrationPage } from '../register';
-import { backupRegistrationForm } from '../register/data/actions';
+  getTpaHint,
+  getTpaProvider,
+  updatePathWithQueryParams,
+} from "../data/utils";
+import { LoginPage } from "../login";
+import { backupLoginForm } from "../login/data/actions";
+import { RegistrationPage } from "../register";
+import { backupRegistrationForm} from "../register/data/actions";
+import { useAppContext } from "../context";
 
-const Logistration = (props) => {
+
+const Logistration = (props) => {  
   const { selectedPage, tpaProviders } = props;
   const tpaHint = getTpaHint();
-  const {
-    providers, secondaryProviders,
-  } = tpaProviders;
+  const { providers, secondaryProviders } = tpaProviders;
   const { formatMessage } = useIntl();
   const [institutionLogin, setInstitutionLogin] = useState(false);
-  const [key, setKey] = useState('');
+  const [key, setKey] = useState("");
   const navigate = useNavigate();
-  const disablePublicAccountCreation = getConfig().ALLOW_PUBLIC_ACCOUNT_CREATION === false;
+  const location= useLocation()
+  const [isRegister, setIsRegister] = useState(
+    location.pathname.includes("register") ? true : false
+  );
+  const {customization, multiTenancyloading} = useAppContext()
+
+ 
+  const disablePublicAccountCreation =
+    getConfig().ALLOW_PUBLIC_ACCOUNT_CREATION === false;
   const hideRegistrationLink = getConfig().SHOW_REGISTRATION_LINKS === false;
 
   useEffect(() => {
@@ -56,11 +64,16 @@ const Logistration = (props) => {
   }, [navigate, disablePublicAccountCreation]);
 
   const handleInstitutionLogin = (e) => {
-    sendTrackEvent('edx.bi.institution_login_form.toggled', { category: 'user-engagement' });
-    if (typeof e === 'string') {
-      sendPageEvent('login_and_registration', e === '/login' ? 'login' : 'register');
+    sendTrackEvent("edx.bi.institution_login_form.toggled", {
+      category: "user-engagement",
+    });
+    if (typeof e === "string") {
+      sendPageEvent(
+        "login_and_registration",
+        e === "/login" ? "login" : "register"
+      );
     } else {
-      sendPageEvent('login_and_registration', e.target.dataset.eventName);
+      sendPageEvent("login_and_registration", e.target.dataset.eventName);
     }
 
     setInstitutionLogin(!institutionLogin);
@@ -70,7 +83,9 @@ const Logistration = (props) => {
     if (tabKey === currentTab) {
       return;
     }
-    sendTrackEvent(`edx.bi.${tabKey.replace('/', '')}_form.toggled`, { category: 'user-engagement' });
+    sendTrackEvent(`edx.bi.${tabKey.replace("/", "")}_form.toggled`, {
+      category: "user-engagement",
+    });
     props.clearThirdPartyAuthContextErrorMessage();
     if (tabKey === LOGIN_PAGE) {
       props.backupRegistrationForm();
@@ -85,8 +100,8 @@ const Logistration = (props) => {
       <Icon src={ChevronLeft} className="left-icon" />
       <span className="ml-2">
         {selectedPage === LOGIN_PAGE
-          ? formatMessage(messages['logistration.sign.in'])
-          : formatMessage(messages['logistration.register'])}
+          ? formatMessage(messages["logistration.sign.in"])
+          : formatMessage(messages["logistration.register"])}
       </span>
     </div>
   );
@@ -96,61 +111,135 @@ const Logistration = (props) => {
     return !!provider;
   };
 
+  useEffect(() => {
+    setIsRegister(location.pathname.includes("register") ? true : false);
+  }, [location.pathname]);
+
+   
   return (
-    <BaseContainer>
-      <div>
-        {disablePublicAccountCreation
-          ? (
-            <>
-              {institutionLogin && (
-                <Tabs defaultActiveKey="" id="controlled-tab" onSelect={handleInstitutionLogin}>
-                  <Tab title={tabTitle} eventKey={LOGIN_PAGE} />
-                </Tabs>
-              )}
-              <div id="main-content" className="main-content">
-                {!institutionLogin && (
-                  <h3 className="mb-4.5">{formatMessage(messages['logistration.sign.in'])}</h3>
-                )}
-                <LoginPage institutionLogin={institutionLogin} handleInstitutionLogin={handleInstitutionLogin} />
+    <>
+      {multiTenancyloading ? (
+        <div className="mw-xs mx-auto pt-3 text-center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
+        <BaseContainer>
+          <div>
+            {isRegister ? (
+              <div className="d-flex flex-column py-4">
+                <p className="mb-0" style={{ fontWeight: 600 }}>
+                  {customization?.data?.registerWelcome?.title}
+                </p>
+                <p className="mb-0"> {customization?.data?.registerWelcome?.p}</p>
               </div>
-            </>
-          )
-          : (
-            <div>
-              {institutionLogin
-                ? (
-                  <Tabs defaultActiveKey="" id="controlled-tab" onSelect={handleInstitutionLogin}>
-                    <Tab title={tabTitle} eventKey={selectedPage === LOGIN_PAGE ? LOGIN_PAGE : REGISTER_PAGE} />
+            ) : (
+              <div className="d-flex flex-column py-4">
+                <p className="mb-0" style={{ fontWeight: 600 }}>
+                  {customization?.data?.loginWelcome?.title}
+                </p>
+                <p className="mb-0"> {customization?.data?.loginWelcome?.p}</p>
+              </div>
+            )}
+
+            {disablePublicAccountCreation ? (
+              <>
+                {institutionLogin && (
+                  <Tabs
+                    defaultActiveKey=""
+                    id="controlled-tab"
+                    onSelect={handleInstitutionLogin}
+                  >
+                    <Tab title={tabTitle} eventKey={LOGIN_PAGE} />
                   </Tabs>
-                )
-                : (!isValidTpaHint() && !hideRegistrationLink && (
-                  <Tabs defaultActiveKey={selectedPage} id="controlled-tab" onSelect={(tabKey) => handleOnSelect(tabKey, selectedPage)}>
-                    <Tab title={formatMessage(messages['logistration.register'])} eventKey={REGISTER_PAGE} />
-                    <Tab title={formatMessage(messages['logistration.sign.in'])} eventKey={LOGIN_PAGE} />
-                  </Tabs>
-                ))}
-              { key && (
-                <Navigate to={updatePathWithQueryParams(key)} replace />
-              )}
-              <div id="main-content" className="main-content">
-                {!institutionLogin && !isValidTpaHint() && hideRegistrationLink && (
-                  <h3 className="mb-4.5">
-                    {formatMessage(messages[selectedPage === LOGIN_PAGE ? 'logistration.sign.in' : 'logistration.register'])}
-                  </h3>
                 )}
-                {selectedPage === LOGIN_PAGE
-                  ? <LoginPage institutionLogin={institutionLogin} handleInstitutionLogin={handleInstitutionLogin} />
-                  : (
+                <div id="main-content" className="main-content">
+                  {!institutionLogin && (
+                    <h3 className="mb-4.5">
+                      {formatMessage(messages["logistration.sign.in"])}
+                    </h3>
+                  )}
+                  <LoginPage
+                    institutionLogin={institutionLogin}
+                    handleInstitutionLogin={handleInstitutionLogin}
+                    customization={customization}
+                  />
+                </div>
+              </>
+            ) : (
+              <div>
+                {institutionLogin ? (
+                  <Tabs
+                    defaultActiveKey=""
+                    id="controlled-tab"
+                    onSelect={handleInstitutionLogin}
+                  >
+                    <Tab
+                      title={tabTitle}
+                      eventKey={
+                        selectedPage === LOGIN_PAGE ? LOGIN_PAGE : REGISTER_PAGE
+                      }
+                    />
+                  </Tabs>
+                ) : (
+                  !isValidTpaHint() &&
+                  !hideRegistrationLink && (
+                    <Tabs
+                      defaultActiveKey={selectedPage}
+                      id="controlled-tab"
+                      onSelect={(tabKey) =>
+                        handleOnSelect(tabKey, selectedPage)
+                      }
+                    >
+                      <Tab
+                        title={formatMessage(messages["logistration.register"])}
+                        eventKey={REGISTER_PAGE}
+                      />
+                      <Tab
+                        title={formatMessage(messages["logistration.sign.in"])}
+                        eventKey={LOGIN_PAGE}
+                      />
+                    </Tabs>
+                  )
+                )}
+                {key && (
+                  <Navigate to={updatePathWithQueryParams(key)} replace />
+                )}
+                <div id="main-content" className="main-content">
+                  {!institutionLogin &&
+                    !isValidTpaHint() &&
+                    hideRegistrationLink && (
+                      <h3 className="mb-4.5">
+                        {formatMessage(
+                          messages[
+                            selectedPage === LOGIN_PAGE
+                              ? "logistration.sign.in"
+                              : "logistration.register"
+                          ]
+                        )}
+                      </h3>
+                    )}
+                  {selectedPage === LOGIN_PAGE ? (
+                    <LoginPage
+                      institutionLogin={institutionLogin}
+                      handleInstitutionLogin={handleInstitutionLogin}
+                    customization={customization}
+
+                    />
+                  ) : (
                     <RegistrationPage
                       institutionLogin={institutionLogin}
                       handleInstitutionLogin={handleInstitutionLogin}
+                    customization={customization}
+
                     />
                   )}
+                </div>
               </div>
-            </div>
-          )}
-      </div>
-    </BaseContainer>
+            )}
+          </div>
+        </BaseContainer>
+      )}
+    </>
   );
 };
 
@@ -176,15 +265,12 @@ Logistration.defaultProps = {
   selectedPage: REGISTER_PAGE,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   tpaProviders: tpaProvidersSelector(state),
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    backupLoginForm,
-    backupRegistrationForm,
-    clearThirdPartyAuthContextErrorMessage,
-  },
-)(Logistration);
+export default connect(mapStateToProps, {
+  backupLoginForm,
+  backupRegistrationForm,
+  clearThirdPartyAuthContextErrorMessage,
+})(Logistration);

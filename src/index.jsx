@@ -12,13 +12,17 @@ import { createRoot } from 'react-dom/client';
 import configuration from './config';
 import messages from './i18n';
 import MainApp from './MainApp';
+import { ContextAppProvider } from './context';
 
 subscribe(APP_READY, () => {
   const root = createRoot(document.getElementById('root'));
 
   root.render(
     <StrictMode>
+      <ContextAppProvider>
+
       <MainApp />
+      </ContextAppProvider>
     </StrictMode>,
   );
 });

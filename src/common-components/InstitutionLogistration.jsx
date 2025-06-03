@@ -41,6 +41,7 @@ const InstitutionLogistration = props => {
   return (
     <>
       <div className="d-flex justify-content-left mb-4 mt-2">
+        
         <div className="flex-column">
           <h4 className="mb-2 font-weight-bold institutions__heading">
             {headingTitle}
