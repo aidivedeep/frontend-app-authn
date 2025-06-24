@@ -32,96 +32,121 @@ import { RegistrationPage } from "./register";
 import { ResetPasswordPage } from "./reset-password";
 import "./index.scss";
 import { useAppContext } from "./context";
+import { Spinner } from "@openedx/paragon";
 registerIcons();
 
 const MainApp = () => {
   const { customization, multiTenancyloading } = useAppContext();
+
   const [colors, setColors] = useState({
-    activeColor: customization?.INDIGO_PRIMARY_COLOR || "#0A3055",
-    activeHoverColor: customization?.INDIGO_PRIMARY_COLOR || "#0A3055",
-    hoverColor: customization?.INDIGO_PRIMARY_COLOR || "#0A3055",
+    activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+    activeHoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+    hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+    linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
+    linksColorHover:
+      customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
   });
 
   useEffect(() => {
     if (customization) {
       setColors({
-        activeColor: customization.INDIGO_PRIMARY_COLOR,
-        activeHoverColor: customization.INDIGO_PRIMARY_COLOR,
-        hoverColor: customization.INDIGO_PRIMARY_COLOR,
+        activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+        activeHoverColor:
+          customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+        hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+        linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
+        linksColorHover:
+          customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
       });
     }
   }, [customization]);
   return (
-    <div
-      style={{
-        "--active-bg": colors?.activeColor,
-        "--active-hover-bg": colors?.activeHoverColor,
-        "--hover-bg": colors?.hoverColor,
-      }}
-    >
-      <AppProvider store={configureStore()}>
-        <Helmet>
-          <link
-            rel="shortcut icon"
-            href={getConfig().FAVICON_URL}
-            type="image/x-icon"
-          />
-        </Helmet>
-        {getConfig().ZENDESK_KEY && <Zendesk />}
+    <>
+      {multiTenancyloading ? (
+        <div className="mw-xs mx-auto pt-3 text-center">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
+        <div
+          style={{
+            "--active-bg": colors?.activeColor,
+            "--active-hover-bg": colors?.activeHoverColor,
+            "--hover-bg": colors?.hoverColor,
+            "--links-color":colors?.linksColor,
+            "--links-color-hover":colors?.linksColorHover,
+          }}
+        >
+          <AppProvider store={configureStore()}>
+            <Helmet>
+              <link
+                rel="shortcut icon"
+                href={getConfig().FAVICON_URL}
+                type="image/x-icon"
+              />
+            </Helmet>
+            {getConfig().ZENDESK_KEY && <Zendesk />}
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Navigate replace to={updatePathWithQueryParams(REGISTER_PAGE)} />
-            }
-          />
-          <Route
-            path={REGISTER_EMBEDDED_PAGE}
-            element={
-              <EmbeddedRegistrationRoute>
-                <RegistrationPage />
-              </EmbeddedRegistrationRoute>
-            }
-          />
-          <Route
-            path={LOGIN_PAGE}
-            element={
-              <UnAuthOnlyRoute>
-                <Logistration selectedPage={LOGIN_PAGE} />
-              </UnAuthOnlyRoute>
-            }
-          />
-          <Route
-            path={REGISTER_PAGE}
-            element={
-              <UnAuthOnlyRoute>
-                <Logistration />
-              </UnAuthOnlyRoute>
-            }
-          />
-          <Route
-            path={RESET_PAGE}
-            element={
-              <UnAuthOnlyRoute>
-                <ForgotPasswordPage />
-              </UnAuthOnlyRoute>
-            }
-          />
-          <Route
-            path={PASSWORD_RESET_CONFIRM}
-            element={<ResetPasswordPage />}
-          />
-          <Route
-            path={AUTHN_PROGRESSIVE_PROFILING}
-            element={<ProgressiveProfiling />}
-          />
-          <Route path={RECOMMENDATIONS} element={<RecommendationsPage />} />
-          <Route path={PAGE_NOT_FOUND} element={<NotFoundPage />} />
-          <Route path="*" element={<Navigate replace to={PAGE_NOT_FOUND} />} />
-        </Routes>
-      </AppProvider>
-    </div>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Navigate
+                    replace
+                    to={updatePathWithQueryParams(REGISTER_PAGE)}
+                  />
+                }
+              />
+              <Route
+                path={REGISTER_EMBEDDED_PAGE}
+                element={
+                  <EmbeddedRegistrationRoute>
+                    <RegistrationPage />
+                  </EmbeddedRegistrationRoute>
+                }
+              />
+              <Route
+                path={LOGIN_PAGE}
+                element={
+                  <UnAuthOnlyRoute>
+                    <Logistration selectedPage={LOGIN_PAGE} />
+                  </UnAuthOnlyRoute>
+                }
+              />
+              <Route
+                path={REGISTER_PAGE}
+                element={
+                  <UnAuthOnlyRoute>
+                    <Logistration />
+                  </UnAuthOnlyRoute>
+                }
+              />
+              <Route
+                path={RESET_PAGE}
+                element={
+                  <UnAuthOnlyRoute>
+                    <ForgotPasswordPage />
+                  </UnAuthOnlyRoute>
+                }
+              />
+              <Route
+                path={PASSWORD_RESET_CONFIRM}
+                element={<ResetPasswordPage />}
+              />
+              <Route
+                path={AUTHN_PROGRESSIVE_PROFILING}
+                element={<ProgressiveProfiling />}
+              />
+              <Route path={RECOMMENDATIONS} element={<RecommendationsPage />} />
+              <Route path={PAGE_NOT_FOUND} element={<NotFoundPage />} />
+              <Route
+                path="*"
+                element={<Navigate replace to={PAGE_NOT_FOUND} />}
+              />
+            </Routes>
+          </AppProvider>
+        </div>
+      )}
+    </>
   );
 };
 

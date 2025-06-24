@@ -83,7 +83,7 @@ const BaseContainer = ({ children, showWelcomeBanner, fullName }) => {
       <div
         className="text-white d-flex flex-column p-4 px-5"
         style={{
-          backgroundColor: customization?.INDIGO_PRIMARY_COLOR || "#0A3055",
+          backgroundColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
         }}
       >
         {location.pathname.includes("register") ? (
@@ -96,7 +96,7 @@ const BaseContainer = ({ children, showWelcomeBanner, fullName }) => {
         ) : (
           <>
             <p className="fw-semibold mb-0">
-              {customization?.data?.loginBanner?.title || "PLEASE REGISTER"}
+              {customization?.data?.loginBanner?.title || "PLEASE LOGIN"}
             </p>
             <p className="mb-0">{ customization?.data?.loginBanner?.p || "To access your account and courses" }</p>
           </>

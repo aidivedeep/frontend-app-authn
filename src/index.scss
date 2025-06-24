@@ -30,10 +30,14 @@
   outline: none !important;
   box-shadow: none !important;
   border: none !important;
-  border-bottom: 2px solid var(--active-bg) !important; 
+  border-bottom: 2px solid var(--links-color) !important; 
   background-color: transparent !important;
   transition: none !important;
   transform: none !important;
+}
+
+.nav-link:hover{
+  background-color: var(--links-color-hover) !important; 
 }
 
 
@@ -58,3 +62,5 @@
     background-color: transparent !important;
     color: black !important;
   }
+
+  

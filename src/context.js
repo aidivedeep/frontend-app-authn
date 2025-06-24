@@ -1,40 +1,56 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 
+// Context setup
 const ContextAppContext = createContext();
 export const useAppContext = () => useContext(ContextAppContext);
 
+// Provider
 export const ContextAppProvider = ({ children }) => {
   const [customization, setCustomization] = useState(null);
-  const [multiTenancyloading, setMultiTenancyloading] = useState(false);
+  const [multiTenancyLoading, setMultiTenancyLoading] = useState(false);
+
+  const tenancy = process.env.tanancy;
   const siteId = process.env.tanancy_site;
-  const tanancy=process.env.tanancy;
-  useEffect(() => {
-    const fetchCustomization = async () => {
-      try {
-        setMultiTenancyloading(true);
-        const response = await fetch(tanancy + "/api/theme/authn/info", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ siteId }),
-        });
 
-        if (!response.ok) {
-          const errorData = await response.json();
-          throw new Error(errorData.message || "Failed to fetch customization");
-        }
-
-        const result = await response.json();
-        
-        setCustomization(result);
-      } catch (err) {
-        console.error("Fetch error:", err);
-      } finally {
-        setMultiTenancyloading(false);
+  const fetchJSON = async (url, options = {}, defaultError = "Request failed") => {
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.message || defaultError);
       }
-    };
+      return await res.json();
+    } catch (err) {
+      console.error("Fetch error:", err);
+      return null;
+    }
+  };
+
+  const fetchThemeColors = async () => {
+    const result = await fetchJSON(`${tenancy}/api/theme/info/${siteId}`, {}, "Failed to fetch theme colors");
+    if (result?.appearance) {
+      setCustomization((prev) => ({ ...prev, colors: result.appearance }));
+    }
+  };
+
+  const fetchCustomization = async () => {
+    setMultiTenancyLoading(true);
+    const result = await fetchJSON(
+      `${tenancy}/api/theme/authn/info`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ siteId }),
+      },
+      "Failed to fetch customization"
+    );
+    if (result) setCustomization(result);
+    setMultiTenancyLoading(false);
+  };
+
+  useEffect(() => {
     fetchCustomization();
+    fetchThemeColors();
   }, []);
 
   return (
@@ -42,8 +58,8 @@ export const ContextAppProvider = ({ children }) => {
       value={{
         customization,
         setCustomization,
-        multiTenancyloading,
-        setMultiTenancyloading,
+        multiTenancyLoading,
+        setMultiTenancyLoading,
       }}
     >
       {children}
