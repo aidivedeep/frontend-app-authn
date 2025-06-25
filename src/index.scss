@@ -62,11 +62,11 @@
     .layout {
       &:after,
       &:before {
-        box-shadow: 400px -400px 143px 90px rgba(var(--custom-shadow), 0.45) !important;
+        box-shadow: 400px -400px 143px 90px rgba(var(--custom-shadow), 0.3) !important;
       }
   
       &:before {
-        box-shadow: 400px 400px 143px 90px rgba(var(--custom-shadow), 0.45) !important;
+        box-shadow: 400px 400px 143px 90px rgba(var(--custom-shadow), 0.3) !important;
       }
     }
   }
