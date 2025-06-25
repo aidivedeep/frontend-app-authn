@@ -70,3 +70,25 @@
       }
     }
   }
+
+
+// Additional defensive rules to prevent overrides
+[data-theme-persistent] {
+  --custom-shadow: var(--custom-shadow) !important;
+  --active-bg: var(--active-bg) !important;
+  --active-hover-bg: var(--active-hover-bg) !important;
+  --hover-bg: var(--hover-bg) !important;
+  --links-color: var(--links-color) !important;
+  --links-color-hover: var(--links-color-hover) !important;
+}
+
+// Force re-application of variables after Paragon loads
+.pgn-loaded,
+body.paragon-theme-loaded {
+  --custom-shadow: var(--custom-shadow) !important;
+  --active-bg: var(--active-bg) !important;
+  --active-hover-bg: var(--active-hover-bg) !important;
+  --hover-bg: var(--hover-bg) !important;
+  --links-color: var(--links-color) !important;
+  --links-color-hover: var(--links-color-hover) !important;
+}

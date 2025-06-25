@@ -33,6 +33,7 @@ import { ResetPasswordPage } from "./reset-password";
 import "./index.scss";
 import { useAppContext } from "./context";
 import { Spinner } from "@openedx/paragon";
+import { makeThemePersistent } from "./custom-theme-config";
 registerIcons();
 
 const MainApp = () => {
@@ -75,17 +76,24 @@ const MainApp = () => {
 
   useEffect(() => {
     if (customization) {
-      const root = document.documentElement;
-      const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055";
-      const rgb = hexToRgb(hex);
-      root.style.setProperty("--custom-shadow", rgb);
-      root.style.setProperty("--active-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
-      root.style.setProperty("--active-hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
-      root.style.setProperty("--hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
-      root.style.setProperty("--links-color", customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055");
-      root.style.setProperty("--links-color-hover", customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055");
+      const cleanup = makeThemePersistent(customization)
+      return cleanup
     }
-  }, [customization]);
+  }, [customization])
+
+  // useEffect(() => {
+  //   if (customization) {
+  //     const root = document.documentElement;
+  //     const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055";
+  //     const rgb = hexToRgb(hex);
+  //     root.style.setProperty("--custom-shadow", rgb);
+  //     root.style.setProperty("--active-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+  //     root.style.setProperty("--active-hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+  //     root.style.setProperty("--hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+  //     root.style.setProperty("--links-color", customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055");
+  //     root.style.setProperty("--links-color-hover", customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055");
+  //   }
+  // }, [customization]);
   return (
     <>
       {multiTenancyloading ? (
