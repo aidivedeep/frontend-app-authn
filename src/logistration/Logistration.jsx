@@ -135,10 +135,10 @@ const Logistration = (props) => {
               </div>
             ) : (
               <div className="d-flex flex-column py-4">
-                <p className="mb-0" style={{ fontWeight: 600 }}>
+                <p className="mb-0 text-center" style={{ fontWeight: 600 }}>
                   {customization?.data?.loginWelcome?.title}
                 </p>
-                <p className="mb-0"> {customization?.data?.loginWelcome?.p}</p>
+                <p className="mb-0 text-center"> {customization?.data?.loginWelcome?.p}</p>
               </div>
             )}
 
