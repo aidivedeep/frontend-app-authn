@@ -1,12 +1,8 @@
 @import "~@edx/brand/paragon/fonts";
 @import "~@edx/brand/paragon/variables";
 @import "~@openedx/paragon/scss/core/core";
+@import "~@edx/brand/paragon/overrides";
 @import "sass/style";
-
-
-
-
-
 
 .nav-tabs .nav-item .nav-link,
 .nav-tabs .nav-item .nav-link:focus,
@@ -61,13 +57,12 @@
     color: black !important;
   }
 
-  @import "~@edx/brand/paragon/overrides";
 
   #root {
     .layout {
       &:after,
       &:before {
-        box-shadow: 400px -400px 143px 90pxrgba(var(--custom-shadow), 0.45) !important;
+        box-shadow: 400px -400px 143px 90px rgba(var(--custom-shadow), 0.45) !important;
       }
   
       &:before {

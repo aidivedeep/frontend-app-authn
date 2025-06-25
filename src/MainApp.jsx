@@ -36,6 +36,18 @@ import { Spinner } from "@openedx/paragon";
 registerIcons();
 
 const MainApp = () => {
+  function hexToRgb(hex) {
+    if (!hex) return "0, 0, 0"; // fallback
+    hex = hex.replace(/^#/, "");
+    if (hex.length === 3) {
+      hex = hex.split("").map(char => char + char).join("");
+    }
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `${r}, ${g}, ${b}`;
+  }
   const { customization, multiTenancyloading } = useAppContext();
 
   const [colors, setColors] = useState({
@@ -74,7 +86,7 @@ const MainApp = () => {
             "--hover-bg": colors?.hoverColor,
             "--links-color":colors?.linksColor,
             "--links-color-hover":colors?.linksColorHover,
-            "--custom-shadadow":colors?.activeColor,
+            "--custom-shadow": hexToRgb(colors.activeColor),
           }}
         >
           <AppProvider store={configureStore()}>
