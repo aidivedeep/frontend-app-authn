@@ -33,7 +33,7 @@ import { ResetPasswordPage } from "./reset-password";
 import "./index.scss";
 import { useAppContext } from "./context";
 import { Spinner } from "@openedx/paragon";
-// import { makeThemePersistent } from "./custom-theme-config";
+import { makeThemePersistent } from "./custom-theme-config";
 registerIcons();
 
 const MainApp = () => {
@@ -41,10 +41,7 @@ const MainApp = () => {
     if (!hex) return "0, 0, 0"; // fallback
     hex = hex.replace(/^#/, "");
     if (hex.length === 3) {
-      hex = hex
-        .split("")
-        .map((char) => char + char)
-        .join("");
+      hex = hex.split("").map(char => char + char).join("");
     }
     const bigint = parseInt(hex, 16);
     const r = (bigint >> 16) & 255;
@@ -52,8 +49,7 @@ const MainApp = () => {
     const b = bigint & 255;
     return `${r}, ${g}, ${b}`;
   }
-  const { customization, multiTenancyloading, setMultiTenancyLoading } =
-    useAppContext();
+  const { customization, multiTenancyloading ,setMultiTenancyLoading} = useAppContext();
 
   const [colors, setColors] = useState({
     activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
@@ -78,57 +74,26 @@ const MainApp = () => {
     }
   }, [customization]);
 
-  // useEffect(() => {
-  //   if (customization) {
-  //     const cleanup = makeThemePersistent(customization)
-  //     return cleanup
-  //   }
-  // }, [customization])
-
   useEffect(() => {
     if (customization) {
-      const applyStyles = () => {
-        console.log(customization);
-
-        const root = document.documentElement;
-        const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055";
-        const rgb = hexToRgb(hex);
-        root.style.setProperty("--custom-shadow", rgb, "important");
-        root.style.setProperty(
-          "--active-bg",
-          customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-          "important"
-        );
-        root.style.setProperty(
-          "--active-hover-bg",
-          customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-          "important"
-        );
-        root.style.setProperty(
-          "--hover-bg",
-          customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-          "important"
-        );
-        root.style.setProperty(
-          "--links-color",
-          customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
-          "important"
-        );
-        root.style.setProperty(
-          "--links-color-hover",
-          customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
-          "important"
-        );
-      };
-
-      const timer = setTimeout(applyStyles, 500);
-      const interval = setInterval(applyStyles, 1000);
-      return () => {
-        clearTimeout(timer);
-        clearInterval(interval);
-      };
+      const cleanup = makeThemePersistent(customization)
+      return cleanup
     }
-  }, [customization]);
+  }, [customization])
+
+  // useEffect(() => {
+  //   if (customization) {
+  //     const root = document.documentElement;
+  //     const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055";
+  //     const rgb = hexToRgb(hex);
+  //     root.style.setProperty("--custom-shadow", rgb);
+  //     root.style.setProperty("--active-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+  //     root.style.setProperty("--active-hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+  //     root.style.setProperty("--hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+  //     root.style.setProperty("--links-color", customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055");
+  //     root.style.setProperty("--links-color-hover", customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055");
+  //   }
+  // }, [customization]);
   return (
     <>
       {multiTenancyloading ? (
@@ -137,14 +102,14 @@ const MainApp = () => {
         </div>
       ) : (
         <div
-        // style={{
-        //   "--active-bg": colors?.activeColor,
-        //   "--active-hover-bg": colors?.activeHoverColor,
-        //   "--hover-bg": colors?.hoverColor,
-        //   "--links-color":colors?.linksColor,
-        //   "--links-color-hover":colors?.linksColorHover,
-        //   "--custom-shadow": hexToRgb(colors.activeColor),
-        // }}
+          // style={{
+          //   "--active-bg": colors?.activeColor,
+          //   "--active-hover-bg": colors?.activeHoverColor,
+          //   "--hover-bg": colors?.hoverColor,
+          //   "--links-color":colors?.linksColor,
+          //   "--links-color-hover":colors?.linksColorHover,
+          //   "--custom-shadow": hexToRgb(colors.activeColor),
+          // }}
         >
           <AppProvider store={configureStore()}>
             <Helmet>
