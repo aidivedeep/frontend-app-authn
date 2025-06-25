@@ -48,7 +48,7 @@ const MainApp = () => {
     const b = bigint & 255;
     return `${r}, ${g}, ${b}`;
   }
-  const { customization, multiTenancyloading } = useAppContext();
+  const { customization, multiTenancyloading ,setMultiTenancyLoading} = useAppContext();
 
   const [colors, setColors] = useState({
     activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
@@ -72,6 +72,20 @@ const MainApp = () => {
       });
     }
   }, [customization]);
+
+  useEffect(() => {
+    if (customization) {
+      const root = document.documentElement;
+      const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055";
+      const rgb = hexToRgb(hex);
+      root.style.setProperty("--custom-shadow", rgb);
+      root.style.setProperty("--active-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+      root.style.setProperty("--active-hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+      root.style.setProperty("--hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
+      root.style.setProperty("--links-color", customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055");
+      root.style.setProperty("--links-color-hover", customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055");
+    }
+  }, [customization]);
   return (
     <>
       {multiTenancyloading ? (
@@ -80,14 +94,14 @@ const MainApp = () => {
         </div>
       ) : (
         <div
-          style={{
-            "--active-bg": colors?.activeColor,
-            "--active-hover-bg": colors?.activeHoverColor,
-            "--hover-bg": colors?.hoverColor,
-            "--links-color":colors?.linksColor,
-            "--links-color-hover":colors?.linksColorHover,
-            "--custom-shadow": hexToRgb(colors.activeColor),
-          }}
+          // style={{
+          //   "--active-bg": colors?.activeColor,
+          //   "--active-hover-bg": colors?.activeHoverColor,
+          //   "--hover-bg": colors?.hoverColor,
+          //   "--links-color":colors?.linksColor,
+          //   "--links-color-hover":colors?.linksColorHover,
+          //   "--custom-shadow": hexToRgb(colors.activeColor),
+          // }}
         >
           <AppProvider store={configureStore()}>
             <Helmet>
