@@ -127,10 +127,11 @@ const Logistration = (props) => {
           <div>
             {isRegister ? (
               <div className="d-flex flex-column py-4">
-                <p className="mb-0" style={{ fontWeight: 600 }}>
+                <p className="mb-0 text-center" style={{ fontWeight: 600}}>
                   {customization?.data?.registerWelcome?.title}
                 </p>
-                <p className="mb-0"> {customization?.data?.registerWelcome?.p}</p>
+                <p className="mb-0 text-center"> {customization?.data?.registerWelcome?.p}</p>
+                
               </div>
             ) : (
               <div className="d-flex flex-column py-4">
@@ -158,6 +159,7 @@ const Logistration = (props) => {
                       {formatMessage(messages["logistration.sign.in"])}
                     </h3>
                   )}
+                  
                   <LoginPage
                     institutionLogin={institutionLogin}
                     handleInstitutionLogin={handleInstitutionLogin}

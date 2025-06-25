@@ -74,6 +74,7 @@ const MainApp = () => {
             "--hover-bg": colors?.hoverColor,
             "--links-color":colors?.linksColor,
             "--links-color-hover":colors?.linksColorHover,
+            "--custom-shadadow":colors?.activeColor,
           }}
         >
           <AppProvider store={configureStore()}>
