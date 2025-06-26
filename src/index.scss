@@ -92,3 +92,13 @@ body.paragon-theme-loaded {
   --links-color: var(--links-color) !important;
   --links-color-hover: var(--links-color-hover) !important;
 }
+
+body.theme-persistent.paragon-theme-loaded,
+.pgn-loaded.theme-persistent {
+  --custom-shadow: var(--custom-shadow) !important;
+  --active-bg: var(--active-bg) !important;
+  --active-hover-bg: var(--active-hover-bg) !important;
+  --hover-bg: var(--hover-bg) !important;
+  --links-color: var(--links-color) !important;
+  --links-color-hover: var(--links-color-hover) !important;
+}
