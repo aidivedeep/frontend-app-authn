@@ -11,12 +11,12 @@ export const makeThemePersistent = (customization) => {
     };
   
     const colors = {
-      "--custom-shadow": hexToRgb(customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055"),
-      "--active-bg": customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-      "--active-hover-bg": customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-      "--hover-bg": customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-      "--links-color": customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
-      "--links-color-hover": customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055"
+      "--custom-shadow": hexToRgb(customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000"),
+      "--active-bg": customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
+      "--active-hover-bg": customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
+      "--hover-bg": customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
+      "--links-color": customization?.colors?.INDIGO_LINKS_COLOR || "#FF0000",
+      "--links-color-hover": customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#FF0000"
     };
   
     Object.entries(colors).forEach(([key, val]) => {
