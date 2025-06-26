@@ -44,7 +44,7 @@ export const ContextAppProvider = ({ children }) => {
       },
       "Failed to fetch customization"
     );
-    if (result) setCustomization(result);
+    if (result) setCustomization((prev) => ({ ...prev, ...result}));
     setMultiTenancyLoading(false);
   };
 
