@@ -29,9 +29,13 @@
   transition: none !important;
   transform: none !important;
 }
+.nav-tabs .nav-link.active:hover {
+  border-bottom: 2px solid var(--links-color) !important;
+}
 
 .nav-link:hover{
-  background-color: var(--links-color-hover) !important; 
+  // background-color: var(--links-color-hover) !important; 
+  border-bottom: 2px solid var(--links-color) !important;
 }
 
 

@@ -41,7 +41,10 @@ const MainApp = () => {
     if (!hex) return "0, 0, 0"; // fallback
     hex = hex.replace(/^#/, "");
     if (hex.length === 3) {
-      hex = hex.split("").map(char => char + char).join("");
+      hex = hex
+        .split("")
+        .map((char) => char + char)
+        .join("");
     }
     const bigint = parseInt(hex, 16);
     const r = (bigint >> 16) & 255;
@@ -49,27 +52,28 @@ const MainApp = () => {
     const b = bigint & 255;
     return `${r}, ${g}, ${b}`;
   }
-  const { customization, multiTenancyloading ,setMultiTenancyLoading} = useAppContext();
+  const { customization, multiTenancyloading, setMultiTenancyLoading } =
+    useAppContext();
 
   const [colors, setColors] = useState({
-    activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-    activeHoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-    hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-    linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
+    activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
+    activeHoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
+    hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
+    linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#15376D",
     linksColorHover:
-      customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
+      customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#15376D",
   });
 
   useEffect(() => {
     if (customization) {
       setColors({
-        activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+        activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
         activeHoverColor:
-          customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-        hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-        linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
+          customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
+        hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
+        linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#15376D",
         linksColorHover:
-          customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
+          customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#15376D",
       });
     }
   }, [customization]);
@@ -77,22 +81,36 @@ const MainApp = () => {
   useEffect(() => {
     if (customization) {
       const cleanup = makeThemePersistent(customization);
-      return cleanup; // clean up when component unmounts or customization changes
+      return cleanup;
     }
   }, [customization]);
-  
 
   useEffect(() => {
     if (customization) {
       const root = document.documentElement;
-      const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055";
+      const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D";
       const rgb = hexToRgb(hex);
       root.style.setProperty("--custom-shadow", rgb);
-      root.style.setProperty("--active-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
-      root.style.setProperty("--active-hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
-      root.style.setProperty("--hover-bg", customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055");
-      root.style.setProperty("--links-color", customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055");
-      root.style.setProperty("--links-color-hover", customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055");
+      root.style.setProperty(
+        "--active-bg",
+        customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D"
+      );
+      root.style.setProperty(
+        "--active-hover-bg",
+        customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D"
+      );
+      root.style.setProperty(
+        "--hover-bg",
+        customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D"
+      );
+      root.style.setProperty(
+        "--links-color",
+        customization?.colors?.INDIGO_LINKS_COLOR || "#15376D"
+      );
+      root.style.setProperty(
+        "--links-color-hover",
+        customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#15376D"
+      );
     }
   }, [customization]);
 
@@ -105,16 +123,7 @@ const MainApp = () => {
           <Spinner animation="border" variant="primary" />
         </div>
       ) : (
-        <div
-          // style={{
-          //   "--active-bg": colors?.activeColor,
-          //   "--active-hover-bg": colors?.activeHoverColor,
-          //   "--hover-bg": colors?.hoverColor,
-          //   "--links-color":colors?.linksColor,
-          //   "--links-color-hover":colors?.linksColorHover,
-          //   "--custom-shadow": hexToRgb(colors.activeColor),
-          // }}
-        >
+        <div>
           <AppProvider store={configureStore()}>
             <Helmet>
               <link

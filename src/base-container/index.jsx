@@ -83,7 +83,7 @@ const BaseContainer = ({ children, showWelcomeBanner, fullName }) => {
       <div
         className="text-white d-flex flex-column p-4 px-5"
         style={{
-          backgroundColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+          backgroundColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
         }}
       >
         {location.pathname.includes("register") ? (
