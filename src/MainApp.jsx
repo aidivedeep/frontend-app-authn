@@ -52,24 +52,24 @@ const MainApp = () => {
   const { customization, multiTenancyloading ,setMultiTenancyLoading} = useAppContext();
 
   const [colors, setColors] = useState({
-    activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
-    activeHoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
-    hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
-    linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#FF0000",
+    activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+    activeHoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+    hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+    linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
     linksColorHover:
-      customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#FF0000",
+      customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
   });
 
   useEffect(() => {
     if (customization) {
       setColors({
-        activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
+        activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
         activeHoverColor:
-          customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
-        hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#FF0000",
-        linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#FF0000",
+          customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+        hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
+        linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
         linksColorHover:
-          customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#FF0000",
+          customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
       });
     }
   }, [customization]);
@@ -95,6 +95,9 @@ const MainApp = () => {
       root.style.setProperty("--links-color-hover", customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055");
     }
   }, [customization]);
+
+  console.log(customization);
+
   return (
     <>
       {multiTenancyloading ? (

@@ -7,7 +7,7 @@ export const useAppContext = () => useContext(ContextAppContext);
 // Provider
 export const ContextAppProvider = ({ children }) => {
   const [customization, setCustomization] = useState(null);
-  const [multiTenancyLoading, setMultiTenancyLoading] = useState(false);
+  const [multiTenancyLoading, setMultiTenancyLoading] = useState(true);
 
   const tenancy = process.env.tanancy;
   const siteId = process.env.tanancy_site;
