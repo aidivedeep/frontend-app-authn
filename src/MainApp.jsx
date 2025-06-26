@@ -62,17 +62,32 @@ const MainApp = () => {
 
   useEffect(() => {
     if (customization) {
-      setColors({
-        activeColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-        activeHoverColor:
-          customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-        hoverColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055",
-        linksColor: customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055",
-        linksColorHover:
-          customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055",
-      });
+      const hex = customization?.colors?.INDIGO_PRIMARY_COLOR || "#0A3055";
+      const rgb = hexToRgb(hex);
+      const linksColor = customization?.colors?.INDIGO_LINKS_COLOR || "#0A3055";
+      const hoverColor = customization?.colors?.INDIGO_LINKS_HOVER_COLOR || "#0A3055";
+  
+      const styleTagId = "custom-theme-vars";
+      let styleTag = document.getElementById(styleTagId);
+      if (!styleTag) {
+        styleTag = document.createElement("style");
+        styleTag.id = styleTagId;
+        document.head.appendChild(styleTag);
+      }
+  
+      styleTag.innerHTML = `
+        :root {
+          --custom-shadow: ${rgb} !important;
+          --active-bg: ${hex} !important;
+          --active-hover-bg: ${hex} !important;
+          --hover-bg: ${hex} !important;
+          --links-color: ${linksColor} !important;
+          --links-color-hover: ${hoverColor} !important;
+        }
+      `;
     }
   }, [customization]);
+  
 
   // useEffect(() => {
   //   if (customization) {
