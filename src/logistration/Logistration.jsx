@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { useLocation } from "react-router-dom";
-
 import { getConfig } from "@edx/frontend-platform";
 import {
   sendPageEvent,
@@ -29,6 +27,7 @@ import { backupLoginForm } from "../login/data/actions";
 import { RegistrationPage } from "../register";
 import { backupRegistrationForm} from "../register/data/actions";
 import { useAppContext } from "../context";
+import WelcomeContent from "./welcomeContent";
 
 
 const Logistration = (props) => {  
@@ -39,13 +38,8 @@ const Logistration = (props) => {
   const [institutionLogin, setInstitutionLogin] = useState(false);
   const [key, setKey] = useState("");
   const navigate = useNavigate();
-  const location= useLocation()
-  const [isRegister, setIsRegister] = useState(
-    location.pathname.includes("register") ? true : false
-  );
   const {customization, multiTenancyloading} = useAppContext()
 
- 
   const disablePublicAccountCreation =
     getConfig().ALLOW_PUBLIC_ACCOUNT_CREATION === false;
   const hideRegistrationLink = getConfig().SHOW_REGISTRATION_LINKS === false;
@@ -111,10 +105,6 @@ const Logistration = (props) => {
     return !!provider;
   };
 
-  useEffect(() => {
-    setIsRegister(location.pathname.includes("register") ? true : false);
-  }, [location.pathname]);
-
    
   return (
     <>
@@ -125,22 +115,7 @@ const Logistration = (props) => {
       ) : (
         <BaseContainer>
           <div>
-            {isRegister ? (
-              <div className="d-flex flex-column py-4">
-                <p className="mb-0 text-center" style={{ fontWeight: 600}}>
-                  {customization?.data?.registerWelcome?.title}
-                </p>
-                <p className="mb-0 text-center"> {customization?.data?.registerWelcome?.p}</p>
-                
-              </div>
-            ) : (
-              <div className="d-flex flex-column py-4">
-                <p className="mb-0 text-center" style={{ fontWeight: 600 }}>
-                  {customization?.data?.loginWelcome?.title}
-                </p>
-                <p className="mb-0 text-center"> {customization?.data?.loginWelcome?.p}</p>
-              </div>
-            )}
+          <WelcomeContent />
 
             {disablePublicAccountCreation ? (
               <>

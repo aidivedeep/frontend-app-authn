@@ -53,6 +53,7 @@ import {
   setCookie,
 } from "../data/utils";
 import { useAppContext } from "../context";
+import RegisterBottom from "./registrationBottom";
 
 /**
  * Main Registration Page component
@@ -485,18 +486,7 @@ const RegistrationPage = (props) => {
                 />
               )}
             </Form>
-
-            <div>
-              <div className="d-flex flex-column py-4">
-                <p className="mb-0" style={{ fontWeight: 600 }}>
-                  {customization?.data?.registerBottom?.title}
-                </p>
-                <p className="mb-0">
-                  {" "}
-                  {customization?.data?.registerBottom?.p}
-                </p>
-              </div>
-            </div>
+            <RegisterBottom />
           </div>
         )}
       </>

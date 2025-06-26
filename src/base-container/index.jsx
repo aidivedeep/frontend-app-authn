@@ -5,7 +5,6 @@ import { breakpoints } from "@openedx/paragon";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import MediaQuery from "react-responsive";
-import { useLocation } from "react-router-dom";
 import {
   DefaultLargeLayout,
   DefaultMediumLayout,
@@ -22,12 +21,10 @@ import {
   AuthMediumLayout,
   AuthSmallLayout,
 } from "./components/welcome-page-layout";
-import { useAppContext } from "../context";
+import Banner from "./banner";
 
 const BaseContainer = ({ children, showWelcomeBanner, fullName }) => {
   const enableImageLayout = getConfig().ENABLE_IMAGE_LAYOUT;
-  const location = useLocation();
-  const { customization, multiTenancyloading } = useAppContext();
 
   if (enableImageLayout) {
     return (
@@ -80,29 +77,7 @@ const BaseContainer = ({ children, showWelcomeBanner, fullName }) => {
   return (
     <>
       {/* <div className="col-md-12 extra-large-screen-top-stripe" /> */}
-      <div
-        className="text-white d-flex flex-column p-4 px-5"
-        style={{
-          backgroundColor: customization?.colors?.INDIGO_PRIMARY_COLOR || "#15376D",
-        }}
-      >
-        {location.pathname.includes("register") ? (
-          <>
-            <p className="fw-semibold mb-0">
-              {customization?.data?.registerBanner?.title || "PLEASE REGISTER"}
-            </p>
-            <p className="mb-0">{ customization?.data?.registerBanner?.p || "To access your account and courses" }</p>
-          </>
-        ) : (
-          <>
-            <p className="fw-semibold mb-0">
-              {customization?.data?.loginBanner?.title || "PLEASE LOGIN"}
-            </p>
-            <p className="mb-0">{ customization?.data?.loginBanner?.p || "To access your account and courses" }</p>
-          </>
-        )}
-      </div>
-
+      <Banner />
       <div className="layout">
         <MediaQuery maxWidth={breakpoints.small.maxWidth - 1}>
           {showWelcomeBanner ? (

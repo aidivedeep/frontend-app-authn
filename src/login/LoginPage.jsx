@@ -43,6 +43,7 @@ import {
 } from "../data/utils";
 import ResetPasswordSuccess from "../reset-password/ResetPasswordSuccess";
 import { useAppContext } from "../context";
+import LoginBottom from "./loginBottom";
 
 const LoginPage = (props) => {
   const {
@@ -71,7 +72,7 @@ const LoginPage = (props) => {
   const { formatMessage } = useIntl();
   const activationMsgType = getActivationStatus();
   const queryParams = useMemo(() => getAllPossibleQueryParams(), []);
- const {customization} = useAppContext()
+  const { customization } = useAppContext();
   const [formFields, setFormFields] = useState({
     ...backedUpFormData.formFields,
   });
@@ -278,7 +279,11 @@ const LoginPage = (props) => {
             variant="brand"
             className="login-button-width"
             state={submitState}
-            style={{ backgroundColor: customization?.INDIGO_PRIMARY_COLOR, color: 'white', borderColor: customization?.INDIGO_PRIMARY_COLOR }}
+            style={{
+              backgroundColor: customization?.INDIGO_PRIMARY_COLOR,
+              color: "white",
+              borderColor: customization?.INDIGO_PRIMARY_COLOR,
+            }}
             labels={{
               default: formatMessage(messages["sign.in.button"]),
               pending: "",
@@ -286,7 +291,7 @@ const LoginPage = (props) => {
             onClick={handleSubmit}
             onMouseDown={(event) => event.preventDefault()}
           />
-          
+
           <Link
             id="forgot-password"
             name="forgot-password"
@@ -306,14 +311,7 @@ const LoginPage = (props) => {
           />
         </Form>
 
-        <div>
-          <div className="d-flex flex-column py-4">
-            <p className="mb-0" style={{ fontWeight: 600 }}>
-              {customization?.data?.loginBottom?.title}
-            </p>
-            <p className="mb-0"> {customization?.data?.loginBottom?.p}</p>
-          </div>
-        </div>
+        <LoginBottom />
       </div>
     </>
   );
