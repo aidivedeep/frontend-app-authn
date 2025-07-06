@@ -114,7 +114,6 @@ const MainApp = () => {
     }
   }, [customization]);
 
-  console.log(customization);
 
   return (
     <>
@@ -123,7 +122,15 @@ const MainApp = () => {
           <Spinner animation="border" variant="primary" />
         </div>
       ) : (
-        <div>
+        <div
+        style={{
+        "--active-bg": colors?.activeColor,
+        "--active-hover-bg": colors?.activeHoverColor,
+        "--hover-bg": colors?.hoverColor,
+        "--links-color": colors?.linksColor,
+        "--links-color-hover": colors?.linksColorHover,
+      }}
+        >
           <AppProvider store={configureStore()}>
             <Helmet>
               <link
