@@ -8,6 +8,8 @@ export const useAppContext = () => useContext(ContextAppContext);
 export const ContextAppProvider = ({ children }) => {
   const [customization, setCustomization] = useState(null);
   const [multiTenancyLoading, setMultiTenancyLoading] = useState(true);
+  const [themeLoading, setThemeLoading] = useState(true);
+
   const [error, setError] = useState(null);
   const tenancy = process.env.tanancy;
   const siteId = process.env.tanancy_site;
@@ -48,6 +50,7 @@ export const ContextAppProvider = ({ children }) => {
   };
 
   const fetchThemeColors = async () => {
+    setThemeLoading(true)
     const result = await fetchJSON(
       `${tenancy}/api/theme/info/${siteId}`,
       {},
@@ -60,6 +63,7 @@ export const ContextAppProvider = ({ children }) => {
     } else if (result === null) {
       setError("Failed to fetch theme colors: No data returned");
     }
+    setThemeLoading(false)
   };
 
   const fetchCustomization = async () => {
@@ -103,6 +107,8 @@ export const ContextAppProvider = ({ children }) => {
         setMultiTenancyLoading,
         error,
         setError,
+        themeLoading,
+        setThemeLoading
       }}
     >
       {children}

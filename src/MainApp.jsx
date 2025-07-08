@@ -52,7 +52,7 @@ const MainApp = () => {
     const b = bigint & 255;
     return `${r}, ${g}, ${b}`;
   }
-  const { customization, multiTenancyloading, setMultiTenancyLoading } =
+  const { customization, multiTenancyloading, themeLoading } =
     useAppContext();
 
   const [colors, setColors] = useState({
@@ -117,7 +117,7 @@ const MainApp = () => {
 
   return (
     <>
-      {multiTenancyloading ? (
+      {multiTenancyloading || themeLoading ? (
         <div className="mw-xs mx-auto pt-3 text-center">
           <Spinner animation="border" variant="primary" />
         </div>
